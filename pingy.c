@@ -8,6 +8,7 @@
 #include <limits.h>
 
 #define PNG_DEBUG 3
+#define _cb(X) abs((X)*(X)*(X))
 #include <png.h>
 
 typedef uint8_t (*color_func)(int, int);
@@ -118,22 +119,25 @@ uint8_t r_base(int x, int y) {
 }
 
 uint8_t r(int x, int y) {
-	int out = ((float)cur_rand/INT_MAX)*100;
+	int out = 0;;
 	if (r_base(x, y)) {
+		out += ((float)cur_rand/INT_MAX)*100;
 		out += (((y ^ x) % 3) * 255) << 4;
 	}
 	return out;
 }
 
 uint8_t g(int x, int y) {
-	int a = 0;
-	return a*100;
+	return r(x, y);
 }
 
 uint8_t b(int x, int y) {
+	return r(x, y);
 	int out = 0;
 	if (!r_base(x, y)) {
 		out += (((y ^ x) % 3) * (cur_rand % 255)) << 4;
+	} else {
+		out += ((float)cur_rand/INT_MAX)*100;
 	}
 	return out;
 }
