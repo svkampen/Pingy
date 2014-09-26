@@ -107,15 +107,23 @@ uint8_t wrap(int n, int max) {
 }
 
 uint8_t b(int x, int y) {
-	return (char)(_sq(cos(atan2(y-512,x-512)/2))*255);
+	y -= 512;
+	x -= 512;
+
+	double theta = atan2(y, x);
+	double prc = theta / acos(-1) / 2.0f;
+
+	int dist = sqrt(_sq(x) + _sq(y));
+
+	return dist + (prc * 512);
 }
 
 uint8_t g(int x, int y) {
-    return (char)(_sq(cos(atan2(y-512,x-512)/2-2*acos(-1)/3))*255);
+	return b(x-5, y-5);
 }
 
 uint8_t r(int x, int y) {
-    return (char)(_sq(cos(atan2(y-512,x-512)/2+2*acos(-1)/3))*255);
+	return b(x+5, y+5);
 }
 
 int main(int argc, char *argv[]) {

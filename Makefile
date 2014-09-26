@@ -1,4 +1,4 @@
-CC=gcc
+CC=clang
 CFLAGS=-std=c11
 LDFLAGS=-lpng -lm
 
