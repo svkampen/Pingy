@@ -9,6 +9,7 @@
 
 #define PNG_DEBUG 3
 #define _cb(X) abs((X)*(X)*(X))
+#define _sq(X) ((X)*(X))
 #include <png.h>
 
 typedef uint8_t (*color_func)(int, int);
@@ -105,41 +106,16 @@ uint8_t wrap(int n, int max) {
 	return n;
 }
 
-uint8_t r_base(int x, int y) {
-	float s = 2*(.6/(y + 90));
-	float out = ((width+x) * s);
-	out += (y * s);
-	out = (int)out % 2;
-
-	out += ((2*width - x) * s);
-	out += (y * s);
-	out = (int)out % 2;
-
-	return out * 255;
-}
-
-uint8_t r(int x, int y) {
-	int out = 0;;
-	if (r_base(x, y)) {
-		out += ((float)cur_rand/INT_MAX)*100;
-		out += (((y ^ x) % 3) * 255) << 4;
-	}
-	return out;
+uint8_t b(int x, int y) {
+	return (char)(_sq(cos(atan2(y-512,x-512)/2))*255);
 }
 
 uint8_t g(int x, int y) {
-	return r(x, y);
+    return (char)(_sq(cos(atan2(y-512,x-512)/2-2*acos(-1)/3))*255);
 }
 
-uint8_t b(int x, int y) {
-	return r(x, y);
-	int out = 0;
-	if (!r_base(x, y)) {
-		out += (((y ^ x) % 3) * (cur_rand % 255)) << 4;
-	} else {
-		out += ((float)cur_rand/INT_MAX)*100;
-	}
-	return out;
+uint8_t r(int x, int y) {
+    return (char)(_sq(cos(atan2(y-512,x-512)/2+2*acos(-1)/3))*255);
 }
 
 int main(int argc, char *argv[]) {
