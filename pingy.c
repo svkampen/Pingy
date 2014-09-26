@@ -107,23 +107,23 @@ uint8_t wrap(int n, int max) {
 }
 
 uint8_t b(int x, int y) {
-	y -= 512;
-	x -= 512;
+	y -= (height/2);
+	x -= (width/2);
 
 	double theta = atan2(y, x);
 	double prc = theta / acos(-1) / 2.0f;
 
 	int dist = sqrt(_sq(x) + _sq(y));
 
-	return dist + (prc * 512);
+	return dist + (prc * 2 * 256);
 }
 
 uint8_t g(int x, int y) {
-	return b(x-5, y-5);
+	return b(x-5, y-5)/2;
 }
 
 uint8_t r(int x, int y) {
-	return b(x+5, y+5);
+	return b(x+5, y+5)/2;
 }
 
 int main(int argc, char *argv[]) {
